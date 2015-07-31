@@ -5,8 +5,6 @@ import android.content.Context;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 import java.net.URLEncoder;
@@ -51,12 +49,13 @@ public class BaseHttp {
 
     /**
      * 根据请求类型 修改 url
+     *
      * @param method
      * @param parameter
      * @return
      */
-    protected static String basedMethodUpdateHttpUrl(String url,int method, Map<String, String> parameter) {
-        if(parameter==null)return url;
+    protected static String basedMethodUpdateHttpUrl(String url, int method, Map<String, String> parameter) {
+        if (parameter == null) return url;
         //根据请求拼接参数
         switch (method) {
             case Request.Method.GET:
@@ -64,7 +63,7 @@ public class BaseHttp {
                     StringBuffer sb = new StringBuffer();
                     for (String key : parameter.keySet()) {
                         String value = parameter.get(key);
-                        if (value == null){
+                        if (value == null) {
                             L.e(TAG, "注意：参数" + key + "为 null ,已自动更换为空字符串。");
                             value = "";
                         }
@@ -72,31 +71,12 @@ public class BaseHttp {
                     }
                     url = url + "?" + sb;
                 } catch (Exception e) {
-                    L.e(TAG,"请求网络参数错误，不能为null。",e);
+                    L.e(TAG, "请求网络参数错误，不能为null。", e);
                 }
                 break;
         }
         L.i(TAG, "地址：" + url);
         return url;
-    }
-
-
-
-    /**
-     * HTTP 请求回调
-     * @param <T>
-     */
-    public interface Listener<T> {
-        void success(T response);
-        void error(VolleyError error);
-    }
-
-    /**
-     * 图片 回调
-     */
-    public interface ListenerImage {
-        void success(ImageLoader.ImageContainer response);
-        void error(VolleyError error);
     }
 
 }

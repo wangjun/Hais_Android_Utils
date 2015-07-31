@@ -11,9 +11,12 @@ import org.json.JSONObject;
 import java.lang.reflect.ParameterizedType;
 import java.util.Map;
 
+import pw.hais.utils.GenericsUtils;
 import pw.hais.utils.L;
 import pw.hais.utils.http.imageloader.ImageLoaders;
 import pw.hais.utils.http.imageloader.LocalImageManager;
+import pw.hais.utils.http.listener.Listener;
+import pw.hais.utils.http.listener.ListenerImage;
 import pw.hais.utils.http.request.BaseHttp;
 import pw.hais.utils.http.request.RequestJsonObject;
 import pw.hais.utils.http.request.RequestObject;
@@ -127,12 +130,14 @@ public class Http extends BaseHttp {
      * @param parameter     请求参数
      * @param listener      回调
      */
-    public static void getObject(int method, String httpUrl, Map<String, String> parameter,Class clazz,Listener<?> listener) {
+    public static <T>T getObject(int method, String httpUrl, Map<String, String> parameter,Listener<T> listener) {
         parameter = addGlobalParameter(parameter);  //添加参数
         httpUrl = basedMethodUpdateHttpUrl(httpUrl,method,parameter);   //根据 请求类型 拼接GET的请求URL
         //请求网络
+        Class<T> clazz = GenericsUtils.getSuperClassGenricType(listener.getClass());
         RequestObject requestObject = new RequestObject<>(method,httpUrl,parameter,clazz,listener);
         requestQueue.add(requestObject);
+        return null;
     }
 
 }
