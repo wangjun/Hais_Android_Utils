@@ -10,31 +10,31 @@ import pw.hais.utils.EmptyUtil;
 import pw.hais.utils.ViewHolderUtils;
 
 /**
- * EasyAdapter
+ * AppAdapter
  * 简介: 实现简单的列表形式,可以帮助你更快捷的开发,无须再重复实现内容
  * Created by Single on 15-7-18.
  * @version 1.0
  */
-public abstract class EasyAdapter<E,T extends EasyAdapter.ViewHolder> extends android.widget.BaseAdapter {
+public abstract class AppAdapter<E,T extends AppAdapter.ViewHolder> extends android.widget.BaseAdapter {
 
     private int layout;
     private Class<T> mHolderClass;
     private List<E> mList;
     private E[] mArray;
 
-    public EasyAdapter(List<E> mList, int layout, Class<T> mHolderClass) {
+    public AppAdapter(List<E> mList, int layout, Class<T> mHolderClass) {
         this.layout = layout;
         this.mList = mList;
         this.mHolderClass = mHolderClass;
     }
 
-    public EasyAdapter(E[] mArray, int layout, Class<T> mHolderClass) {
+    public AppAdapter(E[] mArray, int layout, Class<T> mHolderClass) {
         this.layout = layout;
         this.mArray = mArray;
         this.mHolderClass = mHolderClass;
     }
 
-    private EasyAdapter(){
+    private AppAdapter(){
     }
 
     public void updateDataSet(List<E> mList){
@@ -90,14 +90,14 @@ public abstract class EasyAdapter<E,T extends EasyAdapter.ViewHolder> extends an
     }
 
     @Override
-    public Object getItem(int position) {
+    public E getItem(int position) {
 
         if(!EmptyUtil.emptyOfList(this.mList)){
-            return this.mList.get(position);
+            return (E) this.mList.get(position);
         }
 
         if(!EmptyUtil.emptyOfArray(this.mArray)){
-            return this.mArray[position];
+            return (E) this.mArray[position];
         }
 
         return null;

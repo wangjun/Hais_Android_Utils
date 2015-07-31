@@ -6,4 +6,13 @@ package pw.hais.utils_demo.entity;
 public class Weather {
     public int errNum;
     public String errMsg;
+
+
+    public Weather() {
+    }
+
+    public Weather(int errNum, String errMsg) {
+        this.errNum = errNum;
+        this.errMsg = errMsg;
+    }
 }
