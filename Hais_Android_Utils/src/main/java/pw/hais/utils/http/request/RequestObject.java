@@ -8,6 +8,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
+import pw.hais.utils.L;
 import pw.hais.utils.UtilConfig;
 import pw.hais.utils.http.Http;
 import pw.hais.utils.http.listener.Listener;
@@ -39,7 +40,13 @@ public class RequestObject<T> extends BaseRequest<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers, Http.PROTOCOL_CHARSET));
-            return Response.success(UtilConfig.GSON.fromJson(jsonString, clazz), HttpHeaderParser.parseCacheHeaders(response));
+            Response<T> responseValue=null;
+            try {
+                responseValue = Response.success(UtilConfig.GSON.fromJson(jsonString, clazz), HttpHeaderParser.parseCacheHeaders(response));
+            }catch (Exception e){
+                L.e(BaseHttp.TAG,"请求结果转换JSON出错",e);
+            }
+            return responseValue;
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }

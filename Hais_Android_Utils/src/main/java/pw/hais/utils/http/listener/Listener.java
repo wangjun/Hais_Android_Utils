@@ -16,4 +16,7 @@ public abstract class Listener<T> {
     public void error(VolleyError error){
         L.e(BaseHttp.TAG,"请求出错",error);
     }
+
+    //不管成功失败都回掉
+    public void httpEnd(boolean isTrue){}
 }

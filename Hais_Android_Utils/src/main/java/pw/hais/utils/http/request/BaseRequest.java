@@ -53,7 +53,10 @@ public abstract class BaseRequest<T> extends Request<T> {
      */
     @Override
     protected void deliverResponse(T response) {
-        if (listener != null) listener.success(response);
+        if (listener != null){
+            listener.httpEnd(true);
+            listener.success(response);
+        }
         L.i(BaseHttp.TAG, "结果：" + UtilConfig.GSON.toJson(response));
     }
 
@@ -64,7 +67,10 @@ public abstract class BaseRequest<T> extends Request<T> {
      */
     @Override
     public void deliverError(VolleyError error) {
-        if (listener != null) listener.error(error);
+        if (listener != null){
+            listener.httpEnd(false);
+            listener.error(error);
+        }
     }
 
     @Override
