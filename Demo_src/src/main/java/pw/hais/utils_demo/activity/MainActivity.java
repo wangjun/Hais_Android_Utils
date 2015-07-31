@@ -61,9 +61,7 @@ public class MainActivity extends BaseActivity {
                 L.showShort("点击："+weatherAdapter.getItem(i).errMsg);
             }
         });
-
-
-
+        
 
 
 
