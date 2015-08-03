@@ -50,20 +50,15 @@ public class MainActivity extends BaseActivity {
         /*-------- 简易Adapter  -------*/
         List<Weather> weatherList = new ArrayList<>();
         weatherList.add(new Weather(1,"111111"));
-        weatherList.add(new Weather(2,"222222"));
-        weatherList.add(new Weather(3,"333333"));
-        weatherList.add(new Weather(4,"444444"));
+        weatherList.add(new Weather(2, "222222"));
+        weatherList.add(new Weather(3, "333333"));
+        weatherList.add(new Weather(4, "444444"));
         final WeatherAdapter weatherAdapter = new WeatherAdapter(weatherList,R.layout.activity_main_list_item, WeatherAdapter.ViewHolder.class);
         listview.setAdapter(weatherAdapter);
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                L.showShort("点击："+weatherAdapter.getItem(i).errMsg);
-            }
-        });
+
+        listview.setOnItemClickListener((adapterView, view, i, l) -> L.showShort("点击：" + weatherAdapter.getItem(i).errMsg));
+
         
-
-
-
     }
+
 }
