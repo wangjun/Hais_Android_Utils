@@ -19,10 +19,12 @@ android {
         }
     }
 
+    /*新添加的Start*/
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    /*新添加的End*/
 
 }
 

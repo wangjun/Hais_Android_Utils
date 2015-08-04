@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
 
         listview.setOnItemClickListener((adapterView, view, i, l) -> L.showShort("点击：" + weatherAdapter.getItem(i).errMsg));
 
-        
+
     }
 
 }
