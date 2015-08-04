@@ -23,7 +23,7 @@ import pw.hais.utils.http.listener.Listener;
 public abstract class BaseRequest<T> extends Request<T> {
     private Map<String, String> params;  //参数
     private Listener<T> listener; //回调
-    private static final int Retry_Time = 16 * 1000;// 请求超时时间
+    private static final int Retry_Time = 25 * 1000;// 请求超时时间
     private static final int Retry_Num = 0;// 重试请求次数
 
     public BaseRequest(int method, String url, Map<String, String> params, Listener<T> listener) {
