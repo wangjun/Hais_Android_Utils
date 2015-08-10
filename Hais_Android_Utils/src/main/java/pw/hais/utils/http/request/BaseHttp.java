@@ -69,7 +69,7 @@ public class BaseHttp {
                         }
                         sb.append(key).append("=").append(URLEncoder.encode(value, "UTF-8")).append("&");
                     }
-                    url = url + "?" + sb;
+                    if(sb.length()!=0)url = url + "?" + sb;
                 } catch (Exception e) {
                     L.e(TAG, "请求网络参数错误，不能为null。", e);
                 }

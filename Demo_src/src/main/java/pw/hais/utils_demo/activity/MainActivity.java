@@ -1,57 +1,69 @@
 package pw.hais.utils_demo.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import pw.hais.utils.L;
+import pw.hais.utils.http.Http;
+import pw.hais.utils.http.listener.Listener;
 import pw.hais.utils_demo.R;
+import pw.hais.utils_demo.adapter.WeatherAdapter;
 import pw.hais.utils_demo.app.BaseActivity;
-import pw.hais.view.TextHtmlImageView;
+import pw.hais.utils_demo.entity.Weather;
 
 public class MainActivity extends BaseActivity {
     //反射免FindViewById，名称必须和 XML的 控件ID一样
-    private TextHtmlImageView text_hello;
+    private TextView text_hello;
+    private ListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String html = "<img src='http://cdn.duitang.com/uploads/item/201210/24/20121024114700_5JveU.jpeg'/><br/>"+
-                        "<img src='http://attach.bbs.miui.com/forum/201408/29/123450r617238484s76q78.jpg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img1.gamedog.cn/2014/05/24/119-1405241001530.jpg'/><br/>"+"<img src='http://attach.bbs.miui.com/forum/201408/29/123450r617238484s76q78.jpg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img1.gamedog.cn/2014/05/24/119-1405241001530.jpg'/><br/>"+"<img src='http://attach.bbs.miui.com/forum/201408/29/123450r617238484s76q78.jpg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img1.gamedog.cn/2014/05/24/119-1405241001530.jpg'/><br/>"+"<img src='http://attach.bbs.miui.com/forum/201408/29/123450r617238484s76q78.jpg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img2.duitang.com/uploads/item/201302/02/20130202212707_4isX8.jpeg'/><br/>"+
-                        "<img src='http://img1.gamedog.cn/2014/05/24/119-1405241001530.jpg'/><br/>"+
-                        "<img src='http://img5q.duitang.com/uploads/item/201210/24/20121024114719_2J8Gu.jpeg'/><br/>";
-        text_hello.setHtml(html);
+        /*--------  免FindViewById  -----------*/
+        text_hello.setText("Hello Hais~~~~~");
+
+        /*---------      请求网络       --------*/
+        loadDialog.show("请求网络中...");
+        String url = "http://apis.baidu.com/apistore/weatherservice/weather";
+        Http.getObject(Request.Method.GET, url, null, new Listener<Weather>() {
+            @Override
+            public void success(Weather response) {
+                L.i("Http Hais解决了getObject的问题："+gson.toJson(response));
+            }
+
+            @Override
+            public void httpEnd(boolean isTrue) {
+                loadDialog.dismiss();
+            }
+        });
+
+        /*-------- 简易Adapter  -------*/
+        List<Weather> weatherList = new ArrayList<>();
+        weatherList.add(new Weather(1,"111111"));
+        weatherList.add(new Weather(2,"222222"));
+        weatherList.add(new Weather(3,"333333"));
+        weatherList.add(new Weather(4,"444444"));
+        final WeatherAdapter weatherAdapter = new WeatherAdapter(weatherList,R.layout.activity_main_list_item, WeatherAdapter.ViewHolder.class);
+        listview.setAdapter(weatherAdapter);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                L.showShort("点击："+weatherAdapter.getItem(i).errMsg);
+            }
+        });
+        
+
+
 
     }
-
 }

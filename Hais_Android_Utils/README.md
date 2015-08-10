@@ -72,7 +72,7 @@
 		//Http请求
 		(1)getString(int method, String url, Map<String, String> parameter,Listener<String> listener)
 		(2)getJsonObject(int method, String httpUrl, Map<String, String> parameter,Listener<JSONObject> listener)
-		~(3)getObject~ //开发中，未能使用
+		(3)getObject
 		
 ##四、pw.hais.utils.sqlite包
 	Sqlite类是 对于orm的简单封装。以下是使用步骤
