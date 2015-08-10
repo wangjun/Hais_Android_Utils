@@ -22,6 +22,12 @@
 		(2)有异常日记捕抓，捕抓类也可以上传日期到服务器。
 	
 	2、AppBaseActivity
+		特点：在activity中，如果xml中定义的ID，跟Activity中变量的名字一样，可免去findViewById
+			如：
+				XML中有一 TextView 的id 为  text_hello
+				Activity中有一 TextView 类型的 text_hello 的属性
+				那么就可以直接 使用 text_hello，而不需要  findViewById。
+
 		(1)属性
 			tag 属性：获取每个activity的名字作为 tag 方便打Log。
 			context 属性： 当前activity 的上下文，方便 设置监听器等。
@@ -45,6 +51,8 @@
 		(3) drawEnd 方法 是 当 PopupWindow绘制完成的回掉，可以在里面 findViewById， 和设置监听器等各种操作。
 		(4)BasePopupWindow。 的showCenter(View v); 方法，是让窗口显示在View 的中间
 		(5)注：由于PopupWindow的限制，不能 在activity未绘制完成的时候调用，一般在 oncreate 中 实例化，  点击按钮等世界后 show();
+
+	3、BaseDialog	[预留]
 	
 ##二、pw.hais.view包
 	1、ButtonFocus
@@ -60,6 +68,9 @@
 		
 	4、TextIntChangeView
 		扩展于TextView使用方法跟TextView 类似，当 setChange(100); 的时候，数值会动态改变。
+
+	5、TextHtmlImageView
+		扩展于TextView使用方法跟TextView 类似，当 setHtml("html字符串"); 的时候，会自动加载 html中的图片。
 		
 ##三、pw.hais.utils.http包
 	1、Http，基于 Vollery
@@ -72,7 +83,7 @@
 		//Http请求
 		(1)getString(int method, String url, Map<String, String> parameter,Listener<String> listener)
 		(2)getJsonObject(int method, String httpUrl, Map<String, String> parameter,Listener<JSONObject> listener)
-		(3)getObject
+		(3)getObject(int method, String httpUrl, Map<String, String> parameter,Listener<对象实体类> listener)
 		
 ##四、pw.hais.utils.sqlite包
 	Sqlite类是 对于orm的简单封装。以下是使用步骤
