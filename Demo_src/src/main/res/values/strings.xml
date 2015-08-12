@@ -2,5 +2,6 @@
     <string name="app_name">Utils_Demo</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="font">&#xe602;  &#xe603;</string>
     <string name="action_settings">Settings</string>
 </resources>

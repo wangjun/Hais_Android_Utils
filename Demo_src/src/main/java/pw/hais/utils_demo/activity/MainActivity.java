@@ -1,5 +1,6 @@
 package pw.hais.utils_demo.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,7 +31,9 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         /*--------  免FindViewById  -----------*/
-        text_hello.setText("Hello Hais~~~~~");
+        Typeface iconfont = Typeface.createFromAsset(getAssets(), "fonts/iconfont.ttf");
+        text_hello.setTypeface(iconfont);
+        text_hello.setText(getResources().getString(R.string.font));
 
         /*---------      请求网络       --------*/
         loadDialog.show("请求网络中...");
