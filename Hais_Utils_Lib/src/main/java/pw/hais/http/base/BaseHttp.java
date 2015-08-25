@@ -31,7 +31,6 @@ public class BaseHttp<T> {
     protected static Http mInstance;
     protected OkHttpClient mOkHttpClient;
     protected Handler mDelivery;
-    protected static Gson gson = UtilConfig.GSON;
 
     public BaseHttp() {
         mOkHttpClient = new OkHttpClient();
@@ -114,9 +113,14 @@ public class BaseHttp<T> {
                             }
                         }
                     });
-                } catch (Exception e) {
-                    L.e(TAG, "出错", e);
-                    listener.error(response.request(), e);
+                } catch (final Exception e) {
+                    mDelivery.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            L.e(TAG, "出错", e);
+                            listener.error(response.request(), e);
+                        }
+                    });
                 }
             }
         });
