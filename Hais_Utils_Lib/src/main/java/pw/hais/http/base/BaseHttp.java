@@ -201,6 +201,10 @@ public class BaseHttp<T> {
             ops.inJustDecodeBounds = false;
             ops.inSampleSize = inSampleSize;
             final Bitmap bm = BitmapFactory.decodeStream(inputStream, null, ops);
+            if(bm==null){
+                L.i(TAG,"图片不存在：" + url);
+                throw new Exception("图片不存在：" + url);
+            }
             mDelivery.post(new Runnable() {
                 @Override
                 public void run() {
