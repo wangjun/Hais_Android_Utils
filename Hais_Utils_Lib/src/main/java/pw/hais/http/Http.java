@@ -1,5 +1,10 @@
 package pw.hais.http;
 
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
+import com.squareup.okhttp.Response;
+
 import org.json.JSONObject;
 
 import java.io.File;
@@ -8,6 +13,7 @@ import java.util.Map;
 import pw.hais.http.base.BaseHttp;
 import pw.hais.http.base.Listener;
 import pw.hais.http.base.Method;
+import pw.hais.utils.L;
 
 /**
  * 基于 OkHttp 的网络请求封装
@@ -39,6 +45,15 @@ public class Http extends BaseHttp {
     public static <T>T updateFile( String url, Map<String, String> params, File file, String fileKey, Listener<T> listener){
         getInstance().addRequest(Method.FileUpdate,url,params,new File[]{file}, new String[]{fileKey},listener);
         return null;
+    }
+
+    /*-----------------------------图片下载显示-------------------------------------*/
+    public static void displayImage(ImageView imageView,String url){
+        getInstance().loadImage(imageView,url,null);
+    }
+
+    public static void displayImage(ImageView imageView,String url,Listener<Bitmap> listener){
+        getInstance().loadImage(imageView,url,listener);
     }
 
 

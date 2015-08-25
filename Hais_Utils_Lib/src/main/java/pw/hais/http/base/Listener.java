@@ -13,7 +13,7 @@ public abstract class Listener<T> {
 
 
     public void error(Request request, Exception e) {
-
+        e.printStackTrace();
     }
 
     //不管成功失败都回掉
