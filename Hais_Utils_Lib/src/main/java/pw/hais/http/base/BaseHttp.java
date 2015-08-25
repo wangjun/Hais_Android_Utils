@@ -5,18 +5,16 @@ import android.os.Looper;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Callback;
-import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 
 import pw.hais.http.Http;
@@ -53,8 +51,33 @@ public class BaseHttp<T> {
     }
 
 
-    protected void addRequest(Method method, String url, Map<String, String> params, final Listener<T> listener) {
-        Request request = getRequest(method, url, params);  //根据请求 类型，获取 Request
+    /**
+     * 添加一个请求
+     *
+     * @param method   请求类型
+     * @param url      请求地址
+     * @param params   请求参数
+     * @param files    文件
+     * @param fileKeys
+     * @param listener 监听
+     */
+    protected void addRequest(Method method, String url, Map<String, String> params, File[] files, String[] fileKeys, Listener<T> listener) {
+        Request request = HttpRequest.getRequest(method, url, params, files, fileKeys);  //根据请求 类型，获取 Request
+        doRequest(request, listener);    //添加请求
+    }
+
+    protected void addRequest(Method method, String url, Map<String, String> params, Listener<T> listener) {
+        addRequest(method, url, params, null, null, listener);
+    }
+
+
+    /**
+     * 处理Http 请求回调
+     *
+     * @param request
+     * @param listener
+     */
+    private void doRequest(Request request, final Listener<T> listener) {
 
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -98,46 +121,5 @@ public class BaseHttp<T> {
             }
         });
     }
-
-    protected static Request getRequest(Method method, String url, Map<String, String> params) {
-        //根据请求拼接参数
-        Request request = null;
-        switch (method) {
-            case GET:
-                try {
-                    if (params == null) params = new HashMap<>();
-                    StringBuffer sb = new StringBuffer();
-                    for (String key : params.keySet()) {
-                        String value = params.get(key);
-                        if (value == null) {
-                            L.e(TAG, "注意：参数" + key + "为 null ,已自动更换为空字符串。");
-                            value = "";
-                        }
-                        sb.append(key).append("=").append(URLEncoder.encode(value, "UTF-8")).append("&");
-                    }
-                    if (sb.length() != 0) url = url + "?" + sb;
-                } catch (Exception e) {
-                    L.e(TAG, "请求网络参数错误，不能为null。", e);
-                }
-                L.i(TAG, "地址：" + url);
-                request = new Request.Builder().url(url).build();
-                break;
-            case POST:
-                if (params == null) params = new HashMap<>();
-                FormEncodingBuilder builder = new FormEncodingBuilder();
-                for (String key : params.keySet()) {
-                    String value = params.get(key);
-                    if (value == null) L.e(TAG, "注意：参数" + key + "为 null。");
-                    builder.add(key, value);
-                }
-                L.i(TAG, "地址：" + url);
-                L.i(TAG, "参数：" + gson.toJson(params));
-                request = new Request.Builder().url(url).post(builder.build()).build();
-                break;
-        }
-
-        return request;
-    }
-
 
 }

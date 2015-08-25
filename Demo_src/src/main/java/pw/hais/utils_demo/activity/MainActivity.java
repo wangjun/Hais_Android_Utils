@@ -44,7 +44,7 @@ public class MainActivity extends BaseActivity {
         Http.getObject(Method.GET, url, null, new Listener<Weather>() {
             @Override
             public void success(Response response, Weather result) {
-                L.i("Http Hais解决了getObject的问题：" + gson.toJson(result));
+                L.i("Http 获取getObject：" + gson.toJson(result));
             }
         });
 
