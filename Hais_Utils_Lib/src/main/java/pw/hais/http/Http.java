@@ -2,6 +2,7 @@ package pw.hais.http;
 
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.Map;
 
 import pw.hais.http.base.BaseHttp;
@@ -15,6 +16,7 @@ import pw.hais.http.base.Method;
 public class Http extends BaseHttp {
 
 
+    /*-----------------------------HTTP网络请求-------------------------------------*/
     public static void getString(Method method, String url, Map<String, String> params,Listener<String> listener) {
         getInstance().addRequest(method, url, params, listener);
     }
@@ -25,6 +27,17 @@ public class Http extends BaseHttp {
 
     public static <T>T getObject(Method method, String url, Map<String, String> params,Listener<T> listener) {
         getInstance().addRequest(method, url, params, listener);
+        return null;
+    }
+
+    /*-----------------------------HTTP文件上传-------------------------------------*/
+    public static <T>T updateFile( String url, Map<String, String> params, File[] files, String[] fileKeys, Listener<T> listener){
+        getInstance().addRequest(Method.FileUpdate,url,params,files,fileKeys,listener);
+        return null;
+    }
+
+    public static <T>T updateFile( String url, Map<String, String> params, File file, String fileKey, Listener<T> listener){
+        getInstance().addRequest(Method.FileUpdate,url,params,new File[]{file}, new String[]{fileKey},listener);
         return null;
     }
 
