@@ -8,8 +8,9 @@ import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
-import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.CookieManager;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pw.hais.http.Http;
+import pw.hais.utils.GenericsUtils;
 import pw.hais.utils.L;
 import pw.hais.utils.UtilConfig;
 
@@ -57,24 +59,42 @@ public class BaseHttp<T> {
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Request request, final IOException e) {
-                L.e(TAG, "出错", e);
-                listener.httpEnd(false);
-                listener.error(request, e);
+                mDelivery.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        L.e(TAG, "出错", e);
+                        listener.error(request, e);
+                    }
+                });
             }
 
             @Override
             public void onResponse(final Response response) {
                 try {
-                    String string = response.body().string();
+                    final String string = response.body().string();
                     L.i(TAG, "结果：" + string);
-                    listener.httpEnd(true);
-                    listener.success(response, (T) string);
+                    mDelivery.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Class<T> clazz = GenericsUtils.getSuperClassGenricType(listener.getClass());
+                                if (clazz == String.class) {        //字符串
+                                    listener.success(response, (T) string);
+                                } else if (clazz == JSONObject.class) {     //JSONObject
+                                    listener.success(response, (T) new JSONObject(string));
+                                } else {    //Object
+                                    listener.success(response, UtilConfig.GSON.fromJson(string, clazz));
+                                }
+                            } catch (Exception e) {
+                                L.e(TAG, "出错", e);
+                                listener.error(response.request(), e);
+                            }
+                        }
+                    });
                 } catch (Exception e) {
                     L.e(TAG, "出错", e);
-                    listener.httpEnd(false);
                     listener.error(response.request(), e);
                 }
-
             }
         });
     }
@@ -107,10 +127,7 @@ public class BaseHttp<T> {
                 FormEncodingBuilder builder = new FormEncodingBuilder();
                 for (String key : params.keySet()) {
                     String value = params.get(key);
-                    if (value == null) {
-                        L.e(TAG, "注意：参数" + key + "为 null ,已自动更换为空字符串。");
-                        value = "";
-                    }
+                    if (value == null) L.e(TAG, "注意：参数" + key + "为 null。");
                     builder.add(key, value);
                 }
                 L.i(TAG, "地址：" + url);
