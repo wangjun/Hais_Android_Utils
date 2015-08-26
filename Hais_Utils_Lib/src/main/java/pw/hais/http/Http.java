@@ -44,6 +44,11 @@ public class Http {
         BaseHttp.addImageRequest(imageView, url, listener);
     }
 
+    /*-----------------------------文件　　下载-------------------------------------*/
+    public static void download(String url, String fileDir, Listener<String> listener) {
+        BaseHttp.addDownloadRequest(url,fileDir,listener);
+    }
+
 
 
 }

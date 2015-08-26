@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import pw.hais.http.Http;
 import pw.hais.utils_demo.R;
 import pw.hais.utils_demo.app.BaseActivity;
 
@@ -18,6 +19,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Http.get("http://baidu.com",null,null);
     }
 
 

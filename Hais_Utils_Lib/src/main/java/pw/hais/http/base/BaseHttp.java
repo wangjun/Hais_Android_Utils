@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import pw.hais.utils.L;
 import pw.hais.utils.UtilConfig;
 
 /**
@@ -49,17 +48,7 @@ public class BaseHttp {
         DoRequest.getInstance().mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Request request, final IOException e) {
-                DoRequest.getInstance().mDelivery.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        L.i(TAG, "图片出错：" + url);
-                        imageView.setImageResource(error_drawable_id);
-                        if (listener != null) {
-                            listener.httpEnd(false);
-                            listener.error(request, e);
-                        }
-                    }
-                });
+                DoRequest.getInstance().onHttpError(request, e, listener);
             }
 
             @Override
@@ -69,5 +58,12 @@ public class BaseHttp {
         });
     }
 
+    /**
+     * 添加一个 文件下载 请求
+     */
+    public static void addDownloadRequest(String url, String fileDir, Listener<String> listener) {
+        Request request = GetRequest.requestDownload(url, fileDir);
+        DoRequest.getInstance().doDownloadResponse(request, url,fileDir, listener);
+    }
 
 }
