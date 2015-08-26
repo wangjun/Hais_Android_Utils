@@ -32,6 +32,15 @@ public class BaseHttp {
     }
 
     /**
+     * 添加Post Body请求
+     */
+    public static <T>T addPostBodyRequest(String url, T body, Listener<?> listener) {
+        Request request = GetRequest.requestPostBody(url, body);  //根据请求 类型，获取 Request
+        DoRequest.getInstance().doHttpRequest(request, listener);  //处理请求
+        return null;
+    }
+
+    /**
      * 添加一个 Post 文件上传 请求
      */
     public static void addUpdateRequest(String url, Map<String, String> params, File[] files, String[] fileKeys, Listener<?> listener) {

@@ -25,6 +25,19 @@ public class Http {
         BaseHttp.addHttpRequest(Method.POST, url, params, listener);
     }
 
+    public static void post(String url,String body,Listener<?> listener){
+        BaseHttp.addPostBodyRequest(url,body,listener);
+    }
+
+    public static void post(String url,File bodyFile,Listener<?> listener){
+        BaseHttp.addPostBodyRequest(url, bodyFile, listener);
+    }
+
+    public static void post(String url,byte[] bodyBytes,Listener<?> listener){
+        BaseHttp.addPostBodyRequest(url, bodyBytes, listener);
+    }
+
+
     /*-----------------------------HTTP文件上传-------------------------------------*/
     public static void updateFile(String url, Map<String, String> params, File[] files, String[] fileKeys, Listener<?> listener) {
         BaseHttp.addUpdateRequest(url, params, files, fileKeys, listener);

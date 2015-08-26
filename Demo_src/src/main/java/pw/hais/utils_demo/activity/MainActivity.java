@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.squareup.okhttp.Response;
 
+import java.io.File;
+
 import pw.hais.http.Http;
 import pw.hais.http.base.Listener;
 import pw.hais.utils.L;
@@ -25,14 +27,17 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String url = "http://image.beekka.com/blog/2014/bg2014052201.png";
-        String path = Environment.getExternalStorageDirectory().getPath() + "/";
-        Http.download(url, path, new Listener<String>() {
-            @Override
-            public void success(Response response, String result) {
-                L.i("Http","---------"+result);
-            }
-        });
+//        String url = "http://image.beekka.com/blog/2014/bg2014052201.png";
+//        String path = Environment.getExternalStorageDirectory().getPath() + "/";
+//        Http.download(url, path, new Listener<String>() {
+//            @Override
+//            public void success(Response response, String result) {
+//                L.i("Http","---------"+result);
+//            }
+//        });
+
+        String url = "http://baidu.com";
+        Http.post(url,url.getBytes(),null);
     }
 
 
