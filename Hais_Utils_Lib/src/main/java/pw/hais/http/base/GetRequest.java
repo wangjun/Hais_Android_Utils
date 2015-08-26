@@ -117,6 +117,10 @@ public class GetRequest {
         return new Request.Builder().url(url).post(requestBody).build();
     }
 
+    public static Request requestImage(String url){
+        Request request = new Request.Builder().url(url).build();
+        return request;
+    }
 
 
     public static Request requestDownload(String url,String destFileDir){
@@ -124,16 +128,5 @@ public class GetRequest {
         return request;
     }
 
-
-
-
-
-
-
-
-    public static Request requestImage(String url){
-        Request request = new Request.Builder().url(url).build();
-        return request;
-    }
 
 }
