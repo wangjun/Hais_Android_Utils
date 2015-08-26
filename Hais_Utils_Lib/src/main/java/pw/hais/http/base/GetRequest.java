@@ -19,33 +19,22 @@ import pw.hais.utils.UtilConfig;
 /**
  * Created by Hais1992 on 2015/8/25.
  */
-public class HttpRequest {
+public class GetRequest {
 
     /**
-     * 根据请求类型 获取 Request
+     * 添加1个Post 或者Get 请求
      * @param method
      * @param url
      * @param params
-     * @param files
-     * @param fileKeys
      * @return
      */
-    public static Request getRequest(Method method, String url, Map<String, String> params, File[] files, String[] fileKeys) {
+    public static Request requestGetAndPost(Method method, String url, Map<String, String> params) {
         if (params == null) params = new HashMap<>();
-        //根据请求拼接参数
-        Request request = null;
-        switch (method) {
-            case GET:
-                request = requestTypeGet(url, params);
-                break;
-            case POST:
-                request = requestPost(url, params);
-                break;
-            case FileUpdate:
-                request = requestFile(url,files,fileKeys,params);
-                break;
+        if(method ==Method.POST){
+            return requestPost(url, params);
+        }else{
+            return requestGet(url, params);
         }
-        return request;
     }
 
     /**
@@ -54,7 +43,7 @@ public class HttpRequest {
      * @param params 请求参数
      * @return
      */
-    private static Request requestTypeGet(String url, Map<String, String> params) {
+    private static Request requestGet(String url, Map<String, String> params) {
         try {
             StringBuffer sb = new StringBuffer();
             for (String key : params.keySet()) {
@@ -102,7 +91,7 @@ public class HttpRequest {
      * @param params    参数
      * @return
      */
-    private static Request requestFile(String url,File[] files,String[] fileKeys,Map<String,String> params){
+    public static Request requestFile(String url,File[] files,String[] fileKeys,Map<String,String> params){
         MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
         for (String key : params.keySet())
         {
@@ -128,5 +117,23 @@ public class HttpRequest {
         return new Request.Builder().url(url).post(requestBody).build();
     }
 
+
+
+    public static Request requestDownload(String url,String destFileDir){
+        Request request = new Request.Builder().url(url).build();
+        return request;
+    }
+
+
+
+
+
+
+
+
+    public static Request requestImage(String url){
+        Request request = new Request.Builder().url(url).build();
+        return request;
+    }
 
 }
