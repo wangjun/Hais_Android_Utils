@@ -20,7 +20,7 @@ public class UtilConfig {
     //日记
     public static boolean LOG_PRINTF = UtilConfig.DEBUG;  //是否开启日记输出
     public static String LOG_DEFAULL_TAG = "Log";    //日记缺省标签
-    public static String LOG_PREFIX = "-TBQ";            //日记输出前缀
+    public static String LOG_PREFIX = "-Hais";            //日记输出前缀
 
     //数据库
     public static String DB_NAME = UtilConfig.APP_ID+".db";      //数据库名

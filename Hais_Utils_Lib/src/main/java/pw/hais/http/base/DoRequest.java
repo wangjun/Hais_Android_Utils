@@ -68,14 +68,21 @@ public class DoRequest {
             @Override
             public void onResponse(final Response response) {
                 try {
+                    String string =  response.body().string();
+                    L.i(BaseHttp.TAG, "结果：" + string);
                     T obj;
-                    Class<T> clazz = GenericsUtils.getSuperClassGenricType(listener.getClass());
-                    if (clazz == String.class) {        //字符串
-                        obj = (T) response.body().string();
-                    } else if (clazz == JSONObject.class) {     //JSONObject
-                        obj = (T) new JSONObject(response.body().string());
-                    } else {    //Object
-                        obj = UtilConfig.GSON.fromJson(response.body().string(), clazz);
+                    if (listener == null) {
+                        obj = (T) string;
+                    } else {
+                        Class<T> clazz = GenericsUtils.getSuperClassGenricType(listener.getClass());
+                        if(clazz == String.class){
+                            obj = (T) string;
+                        }else if (clazz == JSONObject.class) {     //JSONObject
+                            obj = (T) new JSONObject(string);
+                        } else {    //Object
+                            obj = UtilConfig.GSON.fromJson(string, clazz);
+                        }
+                        listener.onString(response,string);
                     }
                     onHttpSuccess(response, listener, obj);
                 } catch (Exception e) {
@@ -143,6 +150,14 @@ public class DoRequest {
     }
 
 
+    /**
+     * 下载文件
+     *
+     * @param request
+     * @param url
+     * @param destFileDir
+     * @param listener
+     */
     public void doDownloadResponse(final Request request, final String url, final String destFileDir, final Listener<String> listener) {
         mOkHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -176,9 +191,6 @@ public class DoRequest {
                 } finally {
                     try {
                         if (is != null) is.close();
-                    } catch (IOException e) {
-                    }
-                    try {
                         if (fos != null) fos.close();
                     } catch (IOException e) {
                     }
@@ -211,7 +223,6 @@ public class DoRequest {
         mDelivery.post(new Runnable() {
             @Override
             public void run() {
-                L.i(BaseHttp.TAG, "结果：" + UtilConfig.GSON.toJson(result));
                 if (listener != null) {
                     listener.httpEnd(true);
                     listener.success(response, result);

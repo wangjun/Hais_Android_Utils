@@ -16,7 +16,6 @@ import pw.hais.http.base.Method;
  */
 public class Http {
 
-
     /*-----------------------------HTTP网络请求-------------------------------------*/
     public static void get(String url, Map<String, String> params, Listener<?> listener) {
         BaseHttp.addHttpRequest(Method.GET, url, params, listener);
