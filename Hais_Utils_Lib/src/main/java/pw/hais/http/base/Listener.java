@@ -20,6 +20,10 @@ public abstract class Listener<T> {
     public void onString(Response request, String string) {
     }
 
+    public void onProgress(int progress) {
+
+    }
+
     //不管成功失败都回掉
     public void httpEnd(boolean isTrue) {
 

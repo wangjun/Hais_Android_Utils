@@ -68,21 +68,21 @@ public class DoRequest {
             @Override
             public void onResponse(final Response response) {
                 try {
-                    String string =  response.body().string();
+                    String string = response.body().string();
                     L.i(BaseHttp.TAG, "结果：" + string);
                     T obj;
                     if (listener == null) {
                         obj = (T) string;
                     } else {
                         Class<T> clazz = GenericsUtils.getSuperClassGenricType(listener.getClass());
-                        if(clazz == String.class){
+                        if (clazz == String.class) {
                             obj = (T) string;
-                        }else if (clazz == JSONObject.class) {     //JSONObject
+                        } else if (clazz == JSONObject.class) {     //JSONObject
                             obj = (T) new JSONObject(string);
                         } else {    //Object
                             obj = UtilConfig.GSON.fromJson(string, clazz);
                         }
-                        listener.onString(response,string);
+                        listener.onString(response, string);
                     }
                     onHttpSuccess(response, listener, obj);
                 } catch (Exception e) {
@@ -169,7 +169,6 @@ public class DoRequest {
             public void onResponse(Response response) throws IOException {
                 InputStream is = null;
                 byte[] buf = new byte[2048];
-                int len = 0;
                 FileOutputStream fos = null;
                 try {
                     is = response.body().byteStream();
@@ -180,8 +179,11 @@ public class DoRequest {
                     }
                     File file = new File(dir, getFileName(url));
                     fos = new FileOutputStream(file);
+                    int progress = 0,len=0;
                     while ((len = is.read(buf)) != -1) {
+                        progress += len;
                         fos.write(buf, 0, len);
+                        if(listener!=null)listener.onProgress(progress);
                     }
                     fos.flush();
                     //如果下载文件成功，第一个参数为文件的绝对路径
