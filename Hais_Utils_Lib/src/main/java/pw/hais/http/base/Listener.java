@@ -3,9 +3,6 @@ package pw.hais.http.base;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import pw.hais.utils.L;
-import pw.hais.utils.UtilConfig;
-
 /**
  * Http请求回调
  * Created by Hais1992 on 2015/8/25.
