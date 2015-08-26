@@ -21,7 +21,7 @@ import pw.hais.utils.UtilConfig;
  * Created by Hais1992 on 2015/8/25.
  */
 public class GetRequest {
-    private static MediaType type = MediaType.parse("application/octet-stream;charset=utf-8");
+    private static MediaType type = MediaType.parse("application/octet-stream;charset="+UtilConfig.CHARSET);
 
     /**
      * 添加1个Post 或者Get 请求
@@ -78,7 +78,7 @@ public class GetRequest {
                     L.e(BaseHttp.TAG, "注意：参数" + key + "为 null ,已自动更换为空字符串。");
                     value = "";
                 }
-                sb.append(key).append("=").append(URLEncoder.encode(value, "UTF-8")).append("&");
+                sb.append(key).append("=").append(URLEncoder.encode(value, UtilConfig.CHARSET)).append("&");
             }
             if (sb.length() != 0) url = url + "?" + sb;
         } catch (Exception e) {
