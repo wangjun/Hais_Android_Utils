@@ -20,7 +20,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Http.get("http://baidu.com",null,null);
+        Http.displayImage(image_test,"http://image.beekka.com/blog/2014/bg2014052201.png");
     }
 
 
