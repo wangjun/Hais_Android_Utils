@@ -73,17 +73,11 @@
 		扩展于TextView使用方法跟TextView 类似，当 setHtml("html字符串"); 的时候，会自动加载 html中的图片。
 		
 ##三、pw.hais.utils.http包
-	1、Http，基于 Vollery
+	1、Http，基于 OkHttp【修改、开发中...】
 		//图片请求
-		(1)方法 loadImage(ImageView v,String url) ，根据Url加载图片到 view，并缓存。
-		(2)cacheImageBitmap(String url)	，缓存图片
-		(3)getImageBitmap(String url, final ListenerImage listenerImage)，根据url 下载网论图片,缓存图片
-		(4)loadLocalImage(String url, ImageView v)	，	根据url 加载本地图片
-		
 		//Http请求
-		(1)getString(int method, String url, Map<String, String> parameter,Listener<String> listener)
-		(2)getJsonObject(int method, String httpUrl, Map<String, String> parameter,Listener<JSONObject> listener)
-		(3)getObject(int method, String httpUrl, Map<String, String> parameter,Listener<对象实体类> listener)
+		//文件下载
+		//文件上传
 		
 ##四、pw.hais.utils.sqlite包
 	Sqlite类是 对于orm的简单封装。以下是使用步骤
