@@ -237,6 +237,6 @@ public class DoRequest {
 
     private String getFileName(String path) {
         int separatorIndex = path.lastIndexOf("/");
-        return (separatorIndex < 0) ? path : path.substring(separatorIndex + 1, path.length());
+        return (separatorIndex < 0) ? path : path.substring(separatorIndex + 1, path.length()).replace("?","");
     }
 }
