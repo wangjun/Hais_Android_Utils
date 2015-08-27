@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.util.concurrent.TimeUnit;
 
 import pw.hais.http.image.CacheManager;
 import pw.hais.http.image.DisplayAnim;
@@ -41,6 +42,11 @@ public class DoRequest {
     private DoRequest() {
         mOkHttpClient = new OkHttpClient();
         mOkHttpClient.setCookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ORIGINAL_SERVER));
+        //设置超时~
+        mOkHttpClient.setConnectTimeout(10, TimeUnit.SECONDS);
+        mOkHttpClient.setWriteTimeout(10, TimeUnit.SECONDS);
+        mOkHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
+
         mDelivery = new Handler(Looper.getMainLooper());
     }
 
