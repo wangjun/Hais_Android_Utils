@@ -109,7 +109,7 @@ public class DoRequest {
         try {
             inputStream = response.body().byteStream();
 
-            Request request = new Request.Builder().url(url).build();
+            Request request = new Request.Builder().url(url).tag(url).build();
             Call call = mOkHttpClient.newCall(request);
             inputStream = call.execute().body().byteStream();
 

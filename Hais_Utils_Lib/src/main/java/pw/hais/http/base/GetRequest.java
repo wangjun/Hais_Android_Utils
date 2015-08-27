@@ -57,8 +57,8 @@ public class GetRequest {
         }else if(body.getClass() == byte[].class){
             requestBody = RequestBody.create(type, (byte[]) body);
         }
-        L.i(BaseHttp.TAG,"参数："+body);
-        Request request = new Request.Builder().url(url).post(requestBody).build();
+        L.i(BaseHttp.TAG, "参数：" + body);
+        Request request = new Request.Builder().url(url).post(requestBody).tag(url).build();
         return request;
     }
 
@@ -85,7 +85,7 @@ public class GetRequest {
             L.e(BaseHttp.TAG, "请求网络参数错误，不能为null。", e);
         }
         L.i(BaseHttp.TAG, "地址：" + url);
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).tag(url).build();
 
         return request;
     }
@@ -106,7 +106,7 @@ public class GetRequest {
         }
         L.i(BaseHttp.TAG, "地址：" + url);
         L.i(BaseHttp.TAG, "参数：" + UtilConfig.GSON.toJson(params));
-        Request request = new Request.Builder().url(url).post(builder.build()).build();
+        Request request = new Request.Builder().url(url).post(builder.build()).tag(url).build();
         return request;
     }
 
@@ -139,17 +139,17 @@ public class GetRequest {
             }
         }
         RequestBody requestBody = builder.build();
-        return new Request.Builder().url(url).post(requestBody).build();
+        return new Request.Builder().url(url).post(requestBody).tag(url).build();
     }
 
     public static Request requestImage(String url) {
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).tag(url).build();
         return request;
     }
 
 
     public static Request requestDownload(String url, String destFileDir) {
-        Request request = new Request.Builder().url(url).build();
+        Request request = new Request.Builder().url(url).tag(url).build();
         return request;
     }
 

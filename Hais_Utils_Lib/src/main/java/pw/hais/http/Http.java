@@ -62,7 +62,13 @@ public class Http {
 
     /*-----------------------------文件　　下载-------------------------------------*/
     public static void download(String url, String fileDir, Listener<String> listener) {
-        BaseHttp.addDownloadRequest(url,fileDir,listener);
+        BaseHttp.addDownloadRequest(url, fileDir, listener);
+    }
+
+
+    /*-----------------------------取消一个请求-------------------------------------*/
+    public static void cancel(String url){
+        BaseHttp.cancel(url);
     }
 
 

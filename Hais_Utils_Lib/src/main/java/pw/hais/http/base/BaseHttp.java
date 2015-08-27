@@ -85,4 +85,10 @@ public class BaseHttp {
         DoRequest.getInstance().doDownloadResponse(request, url, fileDir, listener);
     }
 
+    /**  取消一个请求 */
+    public static void cancel(String url){
+        if(DoRequest.getInstance().mOkHttpClient!=null){
+            DoRequest.getInstance().mOkHttpClient.cancel(url);
+        }
+    }
 }

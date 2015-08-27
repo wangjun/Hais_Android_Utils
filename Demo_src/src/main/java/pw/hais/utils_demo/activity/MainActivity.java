@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity {
 //        });
 
         String url = "http://b.zol-img.com.cn/desk/bizhi/image/6/1920x1080/144064263261.jpg";
-        Http.cacheImage(url);
+        Http.displayImage(image_test, url);
     }
 
 
