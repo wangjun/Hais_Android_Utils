@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 
+import pw.hais.http.image.CacheManager;
 import pw.hais.utils.GenericsUtils;
 import pw.hais.utils.ImageViewUtils;
 import pw.hais.utils.L;
@@ -121,6 +122,7 @@ public class DoRequest {
                 L.i(BaseHttp.TAG, "图片不存在：" + url);
                 throw new Exception("图片不存在：" + url);
             } else {
+                CacheManager.putBitmapCache(url,bm);
                 mDelivery.post(new Runnable() {
                     @Override
                     public void run() {
@@ -135,7 +137,7 @@ public class DoRequest {
             mDelivery.post(new Runnable() {
                 @Override
                 public void run() {
-                    imageView.setImageResource(BaseHttp.error_drawable_id);
+                    imageView.setImageResource(CacheManager.error_drawable_id);
                 }
             });
         } finally {

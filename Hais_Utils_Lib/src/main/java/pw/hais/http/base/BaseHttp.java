@@ -11,7 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import pw.hais.utils.UtilConfig;
+import pw.hais.http.image.CacheManager;
+import pw.hais.http.image.DisplayAnim;
 
 /**
  * 基于 OkHttp 的网络请求 基本方法
@@ -19,8 +20,6 @@ import pw.hais.utils.UtilConfig;
  */
 public class BaseHttp {
     public static final String TAG = "Http请求";
-    public static final int default_drawable_id = UtilConfig.DEFAULT_DRAWABLE_ID;   //默认图片
-    public static final int error_drawable_id = UtilConfig.ERROR_DRAWABLE_ID;           //错误图片
 
 
     /**
@@ -34,7 +33,7 @@ public class BaseHttp {
     /**
      * 添加Post Body请求
      */
-    public static <T>T addPostBodyRequest(String url, T body, Listener<?> listener) {
+    public static <T> T addPostBodyRequest(String url, T body, Listener<?> listener) {
         Request request = GetRequest.requestPostBody(url, body);  //根据请求 类型，获取 Request
         DoRequest.getInstance().doHttpRequest(request, listener);  //处理请求
         return null;
@@ -52,19 +51,28 @@ public class BaseHttp {
      * 添加一个 图片加载 请求
      */
     public static void addImageRequest(final ImageView imageView, final String url, final Listener<Bitmap> listener) {
-        if (default_drawable_id != 0) imageView.setImageResource(default_drawable_id);    //设置默认图
-        Request request = GetRequest.requestImage(url);
-        DoRequest.getInstance().mOkHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(final Request request, final IOException e) {
-                DoRequest.getInstance().onHttpError(request, e, listener);
-            }
+        if (imageView == null) return;
+        if (url == null) imageView.setImageResource(CacheManager.error_drawable_id);
+        else imageView.setImageResource(CacheManager.default_drawable_id);
+        //开始获取缓存  或 下载
+        Bitmap bitmap = CacheManager.getBitmapCache(url);   //根据URL获取缓存
+        if (bitmap == null){    //如果缓存为空，则开始下载
+            Request request = GetRequest.requestImage(url);
+            DoRequest.getInstance().mOkHttpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(final Request request, final IOException e) {
+                    DoRequest.getInstance().onHttpError(request, e, listener);
+                }
 
-            @Override
-            public void onResponse(Response response) throws IOException {
-                DoRequest.getInstance().doImageResponse(imageView, response, url, listener);
-            }
-        });
+                @Override
+                public void onResponse(Response response) throws IOException {
+                    DoRequest.getInstance().doImageResponse(imageView, response, url, listener);
+                }
+            });
+        }else{
+            DisplayAnim.displayBitmap(url,bitmap,imageView);
+            DoRequest.getInstance().onHttpSuccess(null,listener,bitmap);
+        }
     }
 
     /**
@@ -72,7 +80,7 @@ public class BaseHttp {
      */
     public static void addDownloadRequest(String url, String fileDir, Listener<String> listener) {
         Request request = GetRequest.requestDownload(url, fileDir);
-        DoRequest.getInstance().doDownloadResponse(request, url,fileDir, listener);
+        DoRequest.getInstance().doDownloadResponse(request, url, fileDir, listener);
     }
 
 }

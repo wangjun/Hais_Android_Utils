@@ -1,5 +1,6 @@
 package pw.hais.utils_demo.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.ImageView;
@@ -36,8 +37,13 @@ public class MainActivity extends BaseActivity {
 //            }
 //        });
 
-        String url = "http://baidu.com";
-        Http.post(url,url.getBytes(),null);
+        String url = "http://b.zol-img.com.cn/desk/bizhi/image/6/1920x1080/144064263261.jpg";
+        Http.displayImage(image_test, url, new Listener<Bitmap>() {
+            @Override
+            public void success(Response response, Bitmap result) {
+
+            }
+        });
     }
 
 
