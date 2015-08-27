@@ -29,13 +29,13 @@ public class LocalCache {
         try {
             //读取 配置文件，获取路径文件夹
             if (!"".equals(CacheManager.IMAGE_CACHE_DIR) && !"/".equals(CacheManager.IMAGE_CACHE_DIR) && CacheManager.SD_IS_WIRTE) {
-                path = Environment.getExternalStorageDirectory().toString()+ UtilConfig.IMAGE_CACHE_DIR;//获取跟目录
+                path = Environment.getExternalStorageDirectory().toString() + UtilConfig.IMAGE_CACHE_DIR;//获取跟目录
             }
             //如果路径获取不到，配置为空，则存到 Android/date/包名 文件夹
             if ("".equals(path) || "".equals(UtilConfig.IMAGE_CACHE_DIR))
                 path = CacheManager.context.getExternalCacheDir().getAbsolutePath() + "/";
         } catch (Exception e) {   //如果木有 读写权限，则把东西写入 缓存
-            path = CacheManager.context.getCacheDir().getAbsolutePath() + "/"+ UtilConfig.IMAGE_CACHE_DIR;  //获取缓存目录
+            path = CacheManager.context.getCacheDir().getAbsolutePath() + "/" + UtilConfig.IMAGE_CACHE_DIR;  //获取缓存目录
         }
 
         L.d(BaseHttp.TAG, "SD卡：" + path);
@@ -183,7 +183,7 @@ public class LocalCache {
 
             outStream.flush();
             outStream.close();
-            L.i(BaseHttp.TAG, "已存SD:" + filename);
+            L.i(BaseHttp.TAG, "已存SD:" + CacheManager.IMAGE_CACHE_DIR + filename);
         } catch (FileNotFoundException e) {
             L.i(BaseHttp.TAG, "图片文件写入SD出错" + filename);
         } catch (IOException e) {

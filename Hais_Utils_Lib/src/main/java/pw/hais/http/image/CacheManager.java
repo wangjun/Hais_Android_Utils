@@ -18,7 +18,7 @@ public class CacheManager {
 
     public static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.RGB_565;    //压缩编码
     public static final boolean SD_IS_WIRTE = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);  //判断sd卡是否存在
-    protected static String IMAGE_CACHE_DIR = LocalCache.getFilePath();  //文件缓存目录
+    public static String IMAGE_CACHE_DIR = LocalCache.getFilePath();  //文件缓存目录
     private static SwapCache bitmapCache = new SwapCache();             //内存缓存
 
     /**

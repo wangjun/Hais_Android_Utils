@@ -51,9 +51,11 @@ public class BaseHttp {
      * 添加一个 图片加载 请求
      */
     public static void addImageRequest(final ImageView imageView, final String url, final Listener<Bitmap> listener) {
-        if (imageView == null) return;
-        if (url == null) imageView.setImageResource(CacheManager.error_drawable_id);
-        else imageView.setImageResource(CacheManager.default_drawable_id);
+        if(imageView != null){
+            if (url == null) imageView.setImageResource(CacheManager.error_drawable_id);
+            else imageView.setImageResource(CacheManager.default_drawable_id);
+        }
+
         //开始获取缓存  或 下载
         Bitmap bitmap = CacheManager.getBitmapCache(url);   //根据URL获取缓存
         if (bitmap == null){    //如果缓存为空，则开始下载
@@ -69,7 +71,7 @@ public class BaseHttp {
                     DoRequest.getInstance().doImageResponse(imageView, response, url, listener);
                 }
             });
-        }else{
+        }else if(imageView!=null){
             DisplayAnim.displayBitmap(url,bitmap,imageView);
             DoRequest.getInstance().onHttpSuccess(null,listener,bitmap);
         }

@@ -26,7 +26,7 @@ public class Http {
     }
 
     public static void post(String url,String body,Listener<?> listener){
-        BaseHttp.addPostBodyRequest(url,body,listener);
+        BaseHttp.addPostBodyRequest(url, body, listener);
     }
 
     public static void post(String url,File bodyFile,Listener<?> listener){
@@ -54,6 +54,10 @@ public class Http {
 
     public static void displayImage(ImageView imageView, String url, Listener<Bitmap> listener) {
         BaseHttp.addImageRequest(imageView, url, listener);
+    }
+
+    public static void cacheImage(String url) {
+        BaseHttp.addImageRequest(null, url, null);
     }
 
     /*-----------------------------文件　　下载-------------------------------------*/

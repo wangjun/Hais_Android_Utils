@@ -22,6 +22,8 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 
 import pw.hais.http.image.CacheManager;
+import pw.hais.http.image.DisplayAnim;
+import pw.hais.http.image.LocalCache;
 import pw.hais.utils.GenericsUtils;
 import pw.hais.utils.ImageViewUtils;
 import pw.hais.utils.L;
@@ -106,9 +108,6 @@ public class DoRequest {
         InputStream inputStream = null;
         try {
             inputStream = response.body().byteStream();
-            ImageViewUtils.ImageSize actualImageSize = ImageViewUtils.getImageSize(inputStream);
-            ImageViewUtils.ImageSize imageViewSize = ImageViewUtils.getImageViewSize(imageView);
-            int inSampleSize = ImageViewUtils.calculateInSampleSize(actualImageSize, imageViewSize);
 
             Request request = new Request.Builder().url(url).build();
             Call call = mOkHttpClient.newCall(request);
@@ -116,7 +115,7 @@ public class DoRequest {
 
             BitmapFactory.Options ops = new BitmapFactory.Options();
             ops.inJustDecodeBounds = false;
-            ops.inSampleSize = inSampleSize;
+            ops.inSampleSize = LocalCache.computeSampleSize(ops, -1, 0);
             final Bitmap bm = BitmapFactory.decodeStream(inputStream, null, ops);
             if (bm == null) {
                 L.i(BaseHttp.TAG, "图片不存在：" + url);
@@ -126,8 +125,12 @@ public class DoRequest {
                 mDelivery.post(new Runnable() {
                     @Override
                     public void run() {
-                        L.i(BaseHttp.TAG, "图片显示：" + url);
-                        imageView.setImageBitmap(bm);
+                        if(imageView!=null){
+                            L.i(BaseHttp.TAG, "图片显示：" + url);
+                            DisplayAnim.displayBitmap(url, bm, imageView);
+                        }else{
+                            L.i(BaseHttp.TAG, "图片缓存：" + CacheManager.IMAGE_CACHE_DIR);
+                        }
                     }
                 });
                 onHttpSuccess(response, listener, bm);
@@ -137,7 +140,7 @@ public class DoRequest {
             mDelivery.post(new Runnable() {
                 @Override
                 public void run() {
-                    imageView.setImageResource(CacheManager.error_drawable_id);
+                    if(imageView!=null)imageView.setImageResource(CacheManager.error_drawable_id);
                 }
             });
         } finally {
