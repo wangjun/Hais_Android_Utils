@@ -16,6 +16,7 @@ import pw.hais.http.base.Listener;
 import pw.hais.utils.L;
 import pw.hais.utils_demo.R;
 import pw.hais.utils_demo.app.BaseActivity;
+import pw.hais.utils_demo.utils.TextViewStringToImageUtil;
 
 public class MainActivity extends BaseActivity {
     //反射免FindViewById，名称必须和 XML的 控件ID一样
@@ -39,6 +40,11 @@ public class MainActivity extends BaseActivity {
 
         String url = "http://b.zol-img.com.cn/desk/bizhi/image/6/1920x1080/144064263261.jpg";
         Http.displayImage(image_test, url);
+
+
+        String mssage = "1阿斯5顿123003风格5化2";
+
+        TextViewStringToImageUtil.setTextViewImage(text_hello, this, mssage);
     }
 
 
